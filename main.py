@@ -1,3 +1,4 @@
+import math
 def prim(n):
     """
     :param n: nr intreg
@@ -103,7 +104,49 @@ def citireLista():
 def print_menu():
     print("Alegeti optiunea:\n"
           "1.Afisati cea mai lunga subsecventa de nr prime a unei liste de numere\n"
-          "2.Afisati cea mai lunga subsecventa de nr care au toate cifrele prime a unei liste de numere\n")
+          "2.Afisati cea mai lunga subsecventa de nr care au toate cifrele prime a unei liste de numere\n"
+          "3.Afisati cea mai lunga subsecventa de patrate perfecte\n")
+
+
+def is_perfect_square(x):
+    """
+    verifica daca un nr este patrat perfect
+    :param x: nr int
+    :return: true daca e patrat perfect , fals in caz contrar
+    """
+    if int(math.sqrt(x)) * (math.sqrt(x)) == x:
+        return True
+    else:
+        return False
+
+
+def get_longest_all_perfect_squares(lst: list[int]) -> list[int]:
+    """
+    det subsecventa de patrate perfecte maxima
+    :param lst: lista de numere intregi
+    :return: subsecventa maxima de patrate perfecte
+    """
+    mx=-1
+    nr=0
+    for i in range(len(lst)):
+        if is_perfect_square(lst[i]):
+            nr = nr + 1
+        else:
+            if nr > mx:
+                pozmx=i
+                mx=nr
+            nr = 0
+    if nr > mx:
+        pozmx = i+1
+        mx = nr
+    return lst[pozmx-mx:pozmx]
+
+
+def test_get_longest_all_perfect_squares():
+    assert get_longest_all_perfect_squares([4,9,16,5,4,36,11,15,81,16]) == [4,9,16]
+    assert get_longest_all_perfect_squares([15,11,4,25,81,5,9,16,36,25,11]) == [9,16,36,25]
+    assert get_longest_all_perfect_squares([4,9,15,36,17,16,25,9]) == [16,25,9]
+
 
 def main():
     l=[]
@@ -118,6 +161,10 @@ def main():
             print("Introducesti lista:")
             l = citireLista()
             print(get_longest_prime_digits(l))
+        if optiune == "3":
+            print("Introduceti lista:")
+            l=citireLista()
+            print(get_longest_all_perfect_squares(l))
         else:
             print("optiunea nu exista")
 
